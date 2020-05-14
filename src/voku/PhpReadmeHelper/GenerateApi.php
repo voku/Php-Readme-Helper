@@ -25,8 +25,9 @@ class GenerateApi
     public  $skipMethodsWithLeadingUnderscore = true;
 
     /**
-     * @var array
-     *            e.g. array('public', 'protected', 'private')
+     * 'public' || 'protected' || 'private'
+     *
+     * @var string[]
      */
     public $access = ['public'];
 
