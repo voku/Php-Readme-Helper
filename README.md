@@ -11,6 +11,18 @@
 
 Helper to auto-generate your README...
 
+### Usage
+
+```php
+$readmeText = (new \voku\PhpReadmeHelper\GenerateApi())->generate(
+    __DIR__ . '/../src/MyClass.php',
+    __DIR__ . '/docs/base.md'
+);
+
+
+file_put_contents(__DIR__ . '/../README.md', $readmeText);
+```
+
 
 ### Support
 
