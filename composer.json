@@ -1,0 +1,34 @@
+{
+    "name": "voku/php-readme-helper",
+    "description": "auto-generate your README from your code",
+    "type": "library",
+    "keywords": [
+        "php",
+        "readme"
+    ],
+    "homepage": "https://github.com/voku/Php-Readme-Helper",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lars Moelleken",
+            "homepage": "http://www.moelleken.org/"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "voku/simple-php-code-parser": "~0.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0 || ~7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "voku\\": "src/voku/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "voku\\tests\\": "tests/"
+        }
+    }
+}
