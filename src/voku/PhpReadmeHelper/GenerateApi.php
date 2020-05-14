@@ -12,7 +12,23 @@ class GenerateApi
      *
      * @var bool
      */
-    public $todoModus = true;
+    public  $todoModus = true;
+
+    /**
+     * @var bool
+     */
+    public  $skipDeprecatedMethods = true;
+
+    /**
+     * @var bool
+     */
+    public  $skipMethodsWithLeadingUnderscore = true;
+
+    /**
+     * @var array
+     *            e.g. array('public', 'protected', 'private')
+     */
+    public $access = ['public'];
 
     /**
      * @param string        $codePath
@@ -91,15 +107,16 @@ RAW;
 
             foreach ($phpClass->methods as $method) {
 
-                if ($method->access !== 'public') {
+                /** @noinspection InArrayMissUseInspection */
+                if (!\in_array($method->access, $this->access, true)) {
                     continue;
                 }
 
-                if ($method->is_deprecated) {
+                if ($this->skipDeprecatedMethods && $method->is_deprecated) {
                     continue;
                 }
 
-                if (\strpos($method->name, '_') === 0) {
+                if ($this->skipMethodsWithLeadingUnderscore && \strpos($method->name, '_') === 0) {
                     continue;
                 }
 

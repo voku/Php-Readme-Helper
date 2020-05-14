@@ -99,4 +99,11 @@ final class Dummy extends \stdClass
             'variableName'      => [null],
         ];
     }
+
+    /**
+     * @return bool
+     */
+    private function privateDoNotShowInTheDoc(): bool {
+        return true;
+    }
 }
