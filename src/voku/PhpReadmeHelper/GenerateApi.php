@@ -8,13 +8,22 @@ use voku\SimplePhpParser\Parsers\PhpCodeParser;
 class GenerateApi
 {
     /**
+     * write T-O-D-O comment into the output
+     *
+     * @var bool
+     */
+    public $todoModus = true;
+
+    /**
      * @param string        $codePath
      * @param string        $baseDocFilePath
      * @param string[]|null $useClasses
      *
      * @return string
+     *
+     * @noinspection NestedTernaryOperatorInspection
      */
-    public static function generate(
+    public function generate(
         string $codePath,
         string $baseDocFilePath,
         array $useClasses = null
@@ -81,7 +90,6 @@ RAW;
             $functionsIndex = [];
 
             foreach ($phpClass->methods as $method) {
-                \assert($method instanceof \voku\SimplePhpParser\Model\PHPMethod);
 
                 if ($method->access !== 'public') {
                     continue;
@@ -104,9 +112,26 @@ RAW;
                 $paramsTypes = [];
                 foreach ($method->parameters as $param) {
                     $paramsTemplate = new TemplateFormatter($templateMethodParam);
-                    $paramsTemplate->set('param', ($param->typeFromPhpDocPslam ?: $param->typeFromPhpDoc) . GenerateStringHelper::str_replace_beginning($param->typeMaybeWithComment, $param->typeFromPhpDoc, ''));
+                    $paramsTemplate->set(
+                        'param',
+                        (
+                            $param->typeFromPhpDocPslam
+                                ?: $param->typeFromPhpDoc
+                                ?: $param->type
+                                ?: ($this->todoModus ? 'TODO: __not_detected__' : '')
+                        ) . (
+                            GenerateStringHelper::str_replace_beginning($param->typeMaybeWithComment, $param->typeFromPhpDoc, '')
+                                ?: ' ' . '$' . $param->name
+                        )
+                    );
                     $params[] = $paramsTemplate->format();
-                    $paramsTypes[] = $param->typeFromPhpDoc . ' ' . '$' . $param->name;
+
+                    $paramsTypes[] = (
+                        $param->typeFromPhpDocSimple
+                            ?: $param->typeFromPhpDoc
+                            ?: $param->type
+                            ?: ($this->todoModus ? 'TODO: __not_detected__' : '')
+                    ) . ' ' . '$' . $param->name;
                 }
 
                 if (\count($params) !== 0) {
@@ -123,7 +148,13 @@ RAW;
 
                 $methodTemplate->set('name', $methodWithType);
                 $methodTemplate->set('description', $description);
-                $methodTemplate->set('return', $method->returnTypeMaybeWithComment ?: '__not_detected__');
+                $methodTemplate->set(
+                    'return',
+                    $method->returnTypeMaybeWithComment
+                        ?: $method->returnTypeFromPhpDocPslam
+                        ?: $method->returnType
+                        ?: ($this->todoModus ? 'TODO: __not_detected__' : '')
+                );
 
                 $methodIndexTemplate->set('title', $method->name);
                 $methodIndexTemplate->set('href', '#' . GenerateStringHelper::css_identifier($methodWithType));

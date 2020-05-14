@@ -11,7 +11,7 @@ final class PhpDocHelperTest extends \PHPUnit\Framework\TestCase
 {
     public function testApi(): void
     {
-        $result = \voku\PhpReadmeHelper\GenerateApi::generate(
+        $result = (new \voku\PhpReadmeHelper\GenerateApi())->generate(
             __DIR__ . '/Dummy.php',
             __DIR__ . '/fixtures/base.md',
             [Dummy::class]
@@ -40,20 +40,20 @@ Lorem ipsum dolor sit amet, consetetur ...
 
 ## Class methods
 
-<table><tr><td><a href="#withemptyparamtypephpdocparsedparamtag-array">withEmptyParamTypePhpDoc</a>
+<table><tr><td><a href="#withemptyparamtypephpdocbool-parsedparamtag-array">withEmptyParamTypePhpDoc</a>
 </td><td><a href="#withphpdocparamintnull-userandint">withPhpDocParam</a>
-</td><td><a href="#withpsalmphpdoconlyparamuserandint">withPsalmPhpDocOnlyParam</a>
+</td><td><a href="#withpsalmphpdoconlyparamarray-userandint">withPsalmPhpDocOnlyParam</a>
 </td><td><a href="#withreturntype-arrayintint">withReturnType</a>
-</td></tr><tr><td><a href="#withoutphpdocparamuserandint-intstringnull">withoutPhpDocParam</a>
+</td></tr><tr><td><a href="#withoutphpdocparambool-userandint-intstringnull">withoutPhpDocParam</a>
 </td><td><a href="#withoutreturntype-falseint">withoutReturnType</a>
 </td></tr></table>
 
-## withEmptyParamTypePhpDoc($parsedParamTag): array
+## withEmptyParamTypePhpDoc(bool $parsedParamTag): array
 <a href="#class-methods">↑</a>
 
 
 **Parameters:**
-- ``
+- `bool $parsedParamTag <p>some more info ...</p>`
 
 **Return:**
 - `array`
@@ -68,19 +68,19 @@ Lorem ipsum dolor sit amet, consetetur ...
 - `array<array-key, int>|null $useRandInt`
 
 **Return:**
-- `__not_detected__`
+- `TODO: __not_detected__`
 
 --------
 
-## withPsalmPhpDocOnlyParam($useRandInt): 
+## withPsalmPhpDocOnlyParam(array $useRandInt): 
 <a href="#class-methods">↑</a>
 
 
 **Parameters:**
-- `list<int>|null`
+- `list<int>|null $useRandInt`
 
 **Return:**
-- `__not_detected__`
+- `TODO: __not_detected__`
 
 --------
 
@@ -100,12 +100,12 @@ __nothing__
 
 --------
 
-## withoutPhpDocParam($useRandInt): int[]|string[]|null
+## withoutPhpDocParam(bool $useRandInt): int[]|string[]|null
 <a href="#class-methods">↑</a>
 
 
 **Parameters:**
-- ``
+- `bool $useRandInt`
 
 **Return:**
 - `int[]|string[]|null <p>foo</p>`

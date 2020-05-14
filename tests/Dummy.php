@@ -86,7 +86,8 @@ final class Dummy extends \stdClass
     }
 
     /**
-     * @param $parsedParamTag
+     * @param bool $parsedParamTag
+     *                        <p>some more info ...</p>
      *
      * @return array
      *
