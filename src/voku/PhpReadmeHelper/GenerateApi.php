@@ -12,17 +12,49 @@ class GenerateApi
      *
      * @var bool
      */
-    public  $todoModus = true;
+    public $todoModus = true;
 
     /**
      * @var bool
      */
-    public  $skipDeprecatedMethods = true;
+    public $skipDeprecatedMethods = true;
 
     /**
      * @var bool
      */
-    public  $skipMethodsWithLeadingUnderscore = true;
+    public $skipMethodsWithLeadingUnderscore = true;
+
+    /**
+     * @var string
+     */
+    public $templateMethod = <<<RAW
+## %name%
+<a href="#class-methods">↑</a>
+%description%
+
+**Parameters:**
+%params%
+
+**Return:**
+- `%return%`
+
+--------
+
+RAW;
+
+    /**
+     * @var string
+     */
+    public $templateIndexLink = <<<RAW
+<a href="%href%">%title%</a>
+RAW;
+
+    /**
+     * @var string
+     */
+    public $templateMethodParam = <<<RAW
+- `%param%`
+RAW;
 
     /**
      * 'public' || 'protected' || 'private'
@@ -64,30 +96,6 @@ class GenerateApi
         }
         $documentTemplate = new TemplateFormatter($templateDocument);
 
-        $templateMethodParam = <<<RAW
-- `%param%`
-RAW;
-
-        /** @noinspection HtmlUnknownAnchorTarget */
-        $templateMethod = <<<RAW
-## %name%
-<a href="#class-methods">↑</a>
-%description%
-
-**Parameters:**
-%params%
-
-**Return:**
-- `%return%`
-
---------
-
-RAW;
-
-        $templateIndexLink = <<<RAW
-<a href="%href%">%title%</a>
-RAW;
-
         // -------------------------------------
 
         foreach ($useClasses as $useClass) {
@@ -121,15 +129,15 @@ RAW;
                     continue;
                 }
 
-                $methodIndexTemplate = new TemplateFormatter($templateIndexLink);
+                $methodIndexTemplate = new TemplateFormatter($this->templateIndexLink);
 
-                $methodTemplate = new TemplateFormatter($templateMethod);
+                $methodTemplate = new TemplateFormatter($this->templateMethod);
 
                 // -- params
                 $params = [];
                 $paramsTypes = [];
                 foreach ($method->parameters as $param) {
-                    $paramsTemplate = new TemplateFormatter($templateMethodParam);
+                    $paramsTemplate = new TemplateFormatter($this->templateMethodParam);
                     $paramsTemplate->set(
                         'param',
                         (
