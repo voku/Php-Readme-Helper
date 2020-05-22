@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.4.0 (2020-05-23)
+
+- update "voku/simple-php-code-parser"
+
 ### 0.3.0 (2020-05-16)
 
 - added GenerateApi->hideTheFunctionIndex
