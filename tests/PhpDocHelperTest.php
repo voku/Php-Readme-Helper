@@ -43,7 +43,7 @@ Lorem ipsum dolor sit amet, consetetur ...
 
 <p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#withemptyparamtypephpdocbool-parsedparamtag-array">withEmptyParamTypePhpDoc</a>
 </td><td><a href="#withphpdocparamintnull-userandint">withPhpDocParam</a>
-</td><td><a href="#withpsalmphpdoconlyparamarray-userandint">withPsalmPhpDocOnlyParam</a>
+</td><td><a href="#withpsalmphpdoconlyparamtodo-__not_detected__-userandint">withPsalmPhpDocOnlyParam</a>
 </td><td><a href="#withreturntype-arrayintint">withReturnType</a>
 </td></tr><tr><td><a href="#withoutphpdocparambool-userandint-intstringnull">withoutPhpDocParam</a>
 </td><td><a href="#withoutreturntype-falseint">withoutReturnType</a>
@@ -73,7 +73,7 @@ Lorem ipsum dolor sit amet, consetetur ...
 
 --------
 
-## withPsalmPhpDocOnlyParam(array $useRandInt): 
+## withPsalmPhpDocOnlyParam(TODO: __not_detected__ $useRandInt): 
 <a href="#voku-php-readme-class-methods">↑</a>
 
 

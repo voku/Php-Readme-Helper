@@ -135,7 +135,7 @@ RAW;
                     continue;
                 }
 
-                if ($this->skipDeprecatedMethods && $method->is_deprecated) {
+                if ($this->skipDeprecatedMethods && $method->hasDeprecatedTag) {
                     continue;
                 }
 
@@ -217,8 +217,8 @@ RAW;
                 .
                 (
                     GenerateStringHelper::str_replace_beginning(
-                        $param->typeMaybeWithComment,
-                        $param->typeFromPhpDoc,
+                        (string) $param->typeMaybeWithComment,
+                        (string) $param->typeFromPhpDoc,
                         ''
                     ) ?: ' ' . '$' . $param->name
                 )
