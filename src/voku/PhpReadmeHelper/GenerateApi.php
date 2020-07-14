@@ -269,7 +269,9 @@ RAW;
 
         if ($counterTmp > 0) {
             $indexStrResult .= '</tr>';
+        }
 
+        if ($indexStrResult) {
             $indexStrResult = '<table>' . $indexStrResult . '</table>';
         }
 
