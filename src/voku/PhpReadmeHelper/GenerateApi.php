@@ -217,7 +217,7 @@ RAW;
                 .
                 (
                     GenerateStringHelper::str_replace_beginning(
-                        (string) $param->typeMaybeWithComment,
+                        (string) $param->typeFromPhpDocMaybeWithComment,
                         (string) $param->typeFromPhpDoc,
                         ''
                     ) ?: ' ' . '$' . $param->name
@@ -283,7 +283,7 @@ RAW;
         /** @noinspection NestedTernaryOperatorInspection */
         $returnTemplate->set(
             'return',
-            $method->returnTypeMaybeWithComment
+            $method->returnTypeFromPhpDocMaybeWithComment
                 ?: $method->returnTypeFromPhpDocPslam
                 ?: $method->returnType
                 ?: ($this->todoModus ? 'TODO: __not_detected__' : '')
