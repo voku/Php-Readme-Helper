@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.5.1 (2020-07-15)
+
+- fix html-table output
+
 ### 0.5.0 (2020-07-15)
 
 - update "voku/simple-php-code-parser"
