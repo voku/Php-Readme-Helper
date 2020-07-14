@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.5.0 (2020-07-15)
+
+- update "voku/simple-php-code-parser"
+
 ### 0.4.0 (2020-05-23)
 
 - update "voku/simple-php-code-parser"
