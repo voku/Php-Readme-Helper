@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.6.0 (2020-07-16)
+
+- generate API docs for interfaces in the same way as for classes
+
 ### 0.5.1 (2020-07-15)
 
 - fix html-table output

@@ -23,3 +23,9 @@ Lorem ipsum dolor sit amet, consetetur ...
 %__functions_index__voku\tests\Dummy__%
 
 %__functions_list__voku\tests\Dummy__%
+
+## Interface methods
+
+%__functions_index__voku\tests\DummyInterface__%
+
+%__functions_list__voku\tests\DummyInterface__%

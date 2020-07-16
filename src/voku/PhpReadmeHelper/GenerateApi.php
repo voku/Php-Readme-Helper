@@ -92,7 +92,10 @@ RAW;
         array $useClasses = null
     ): string {
         $phpFiles = PhpCodeParser::getPhpFiles($codePath);
-        $phpClasses = $phpFiles->getClasses();
+        $phpClasses = \array_merge(
+            $phpFiles->getClasses(),
+            $phpFiles->getInterfaces()
+        );
 
         // fallback
         if ($useClasses === null) {
@@ -125,6 +128,7 @@ RAW;
 
             $phpClass = $phpClasses[$useClass];
 
+            // reset
             $functionsDocumentation = [];
             $functionsIndex = [];
 
@@ -170,7 +174,7 @@ RAW;
                 if ($this->hideTheFunctionIndex !== true) {
                     $methodIndexTemplate = new TemplateFormatter($this->templateIndexLink);
                     $methodIndexTemplate->set('title', $method->name);
-                    $methodIndexTemplate->set('href', '#' . GenerateStringHelper::css_identifier($methodWithType));
+                    $methodIndexTemplate->set('href', '#' . GenerateStringHelper::css_identifier($useClass . '-' . $methodWithType));
 
                     $functionsIndex[$method->name] = $methodIndexTemplate->format();
                 }
