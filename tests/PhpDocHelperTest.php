@@ -16,7 +16,7 @@ final class PhpDocHelperTest extends \PHPUnit\Framework\TestCase
             __DIR__ . '/fixtures/base.md',
             [
                 Dummy::class,
-                DummyInterface::class
+                DummyInterface::class,
             ]
         );
 
