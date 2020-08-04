@@ -1,6 +1,6 @@
 # Changelog
 
-### 0.6.0 (2020-07-16)
+### 0.6.0 (2020-08-04)
 
 - generate API docs for interfaces in the same way as for classes
 
