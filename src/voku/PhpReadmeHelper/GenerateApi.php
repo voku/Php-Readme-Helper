@@ -174,7 +174,7 @@ RAW;
                 if ($this->hideTheFunctionIndex !== true) {
                     $methodIndexTemplate = new TemplateFormatter($this->templateIndexLink);
                     $methodIndexTemplate->set('title', $method->name);
-                    $methodIndexTemplate->set('href', '#' . GenerateStringHelper::css_identifier($useClass . '-' . $methodWithType));
+                    $methodIndexTemplate->set('href', '#' . GenerateStringHelper::css_identifier($methodWithType));
 
                     $functionsIndex[$method->name] = $methodIndexTemplate->format();
                 }

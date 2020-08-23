@@ -44,12 +44,12 @@ Lorem ipsum dolor sit amet, consetetur ...
 
 ## Class methods
 
-<p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#vokutestsdummy-withemptyparamtypephpdocbool-parsedparamtag-array">withEmptyParamTypePhpDoc</a>
-</td><td><a href="#vokutestsdummy-withphpdocparamintnull-userandint">withPhpDocParam</a>
-</td><td><a href="#vokutestsdummy-withpsalmphpdoconlyparamtodo-__not_detected__-userandint">withPsalmPhpDocOnlyParam</a>
-</td><td><a href="#vokutestsdummy-withreturntype-arrayintint">withReturnType</a>
-</td></tr><tr><td><a href="#vokutestsdummy-withoutphpdocparambool-userandint-intstringnull">withoutPhpDocParam</a>
-</td><td><a href="#vokutestsdummy-withoutreturntype-falseint">withoutReturnType</a>
+<p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#withemptyparamtypephpdocbool-parsedparamtag-array">withEmptyParamTypePhpDoc</a>
+</td><td><a href="#withphpdocparamintnull-userandint">withPhpDocParam</a>
+</td><td><a href="#withpsalmphpdoconlyparamtodo-__not_detected__-userandint">withPsalmPhpDocOnlyParam</a>
+</td><td><a href="#withreturntype-arrayintint">withReturnType</a>
+</td></tr><tr><td><a href="#withoutphpdocparambool-userandint-intstringnull">withoutPhpDocParam</a>
+</td><td><a href="#withoutreturntype-falseint">withoutReturnType</a>
 </td></tr></table>
 
 ## withEmptyParamTypePhpDoc(bool $parsedParamTag): array
@@ -131,8 +131,8 @@ __nothing__
 
 ## Interface methods
 
-<p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#vokutestsdummyinterface-barbool-foo-nullstring-foo2-bool">bar</a>
-</td><td><a href="#vokutestsdummyinterface-foo-bool">foo</a>
+<p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#barbool-foo-nullstring-foo2-bool">bar</a>
+</td><td><a href="#foo-bool">foo</a>
 </td></tr></table>
 
 ## bar(bool $foo, null|string $foo2): bool
