@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.6.1 (2020-08-23)
+
+- fix github links
+
 ### 0.6.0 (2020-08-04)
 
 - generate API docs for interfaces in the same way as for classes
