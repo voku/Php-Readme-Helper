@@ -213,7 +213,7 @@ RAW;
             $paramsTemplate->set(
                 'param',
                 (
-                    $param->typeFromPhpDocPslam
+                    $param->typeFromPhpDocExtended
                         ?: $param->typeFromPhpDoc
                         ?: $param->type
                         ?: ($this->todoModus ? 'TODO: __not_detected__' : '')
@@ -290,7 +290,7 @@ RAW;
         $returnTemplate->set(
             'return',
             $method->returnTypeFromPhpDocMaybeWithComment
-                ?: $method->returnTypeFromPhpDocPslam
+                ?: $method->returnTypeFromPhpDocExtended
                 ?: $method->returnType
                 ?: ($this->todoModus ? 'TODO: __not_detected__' : '')
         );
