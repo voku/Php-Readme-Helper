@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.6.2 (2020-09-06)
+
+- update vendor + fix BC
+
 ### 0.6.1 (2020-08-23)
 
 - fix github links
