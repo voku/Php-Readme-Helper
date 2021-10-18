@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.6.3 (2021-10-18)
+
+- update vendor
+- 
 ### 0.6.2 (2020-09-06)
 
 - update vendor + fix BC
