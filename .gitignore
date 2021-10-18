@@ -3,6 +3,7 @@ vendor
 composer.lock
 
 # php (phpunit)
+.phpunit.result.cache
 build/logs
 
 # phpcs fixer

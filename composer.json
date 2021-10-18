@@ -16,10 +16,10 @@
     ],
     "require": {
         "php": ">=7.1.0",
-        "voku/simple-php-code-parser": "~0.15"
+        "voku/simple-php-code-parser": "~0.18"
     },
     "require-dev": {
-        "phpunit/phpunit": "~6.0 || ~7.0"
+        "phpunit/phpunit": "~6.0 || ~7.0 || ~9.0"
     },
     "autoload": {
         "psr-4": {
