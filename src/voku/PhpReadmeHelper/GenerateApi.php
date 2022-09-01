@@ -235,6 +235,7 @@ RAW;
                 $param->typeFromPhpDocSimple
                      ?: $param->typeFromPhpDoc
                      ?: $param->type
+                     ?: $param->typeFromPhpDocExtended
                      ?: ($this->todoModus ? 'TODO: __not_detected__' : '')
             ) . ' ' . '$' . $param->name;
         }

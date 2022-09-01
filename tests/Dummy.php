@@ -54,6 +54,16 @@ final class Dummy extends \stdClass
     }
 
     /**
+     * @param callable(string): string $callback
+     *
+     * @return string
+     */
+    public function withCallback($callback)
+    {
+        return $callback('foo');
+    }
+
+    /**
      * @return int[]|string[]|null <p>foo</p>
      *
      * @psalm-return ?list<int|string>

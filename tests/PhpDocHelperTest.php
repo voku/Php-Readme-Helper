@@ -44,13 +44,26 @@ Lorem ipsum dolor sit amet, consetetur ...
 
 ## Class methods
 
-<p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#withemptyparamtypephpdocbool-parsedparamtag-array">withEmptyParamTypePhpDoc</a>
+<p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#withcallbackcallablestring--string-callback-string">withCallback</a>
+</td><td><a href="#withemptyparamtypephpdocbool-parsedparamtag-array">withEmptyParamTypePhpDoc</a>
 </td><td><a href="#withphpdocparamintnull-userandint">withPhpDocParam</a>
-</td><td><a href="#withpsalmphpdoconlyparamtodo-__not_detected__-userandint">withPsalmPhpDocOnlyParam</a>
-</td><td><a href="#withreturntype-arrayintint">withReturnType</a>
-</td></tr><tr><td><a href="#withoutphpdocparambool-userandint-intstringnull">withoutPhpDocParam</a>
+</td><td><a href="#withpsalmphpdoconlyparamlistint-userandint">withPsalmPhpDocOnlyParam</a>
+</td></tr><tr><td><a href="#withreturntype-arrayintint">withReturnType</a>
+</td><td><a href="#withoutphpdocparambool-userandint-intstringnull">withoutPhpDocParam</a>
 </td><td><a href="#withoutreturntype-falseint">withoutReturnType</a>
 </td></tr></table>
+
+## withCallback(callable(string ): string $callback): string
+<a href="#voku-php-readme-class-methods">↑</a>
+
+
+**Parameters:**
+- `callable(string ): string $callback`
+
+**Return:**
+- `string`
+
+--------
 
 ## withEmptyParamTypePhpDoc(bool $parsedParamTag): array
 <a href="#voku-php-readme-class-methods">↑</a>
@@ -76,7 +89,7 @@ Lorem ipsum dolor sit amet, consetetur ...
 
 --------
 
-## withPsalmPhpDocOnlyParam(TODO: __not_detected__ $useRandInt): 
+## withPsalmPhpDocOnlyParam(?list<int> $useRandInt): 
 <a href="#voku-php-readme-class-methods">↑</a>
 
 
