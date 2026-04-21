@@ -22,11 +22,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php: '7.1'
+          - php: '8.1'
             dependencies: lowest
-          - php: '7.4'
+          - php: '8.1'
+            dependencies: stable
+          - php: '8.2'
             dependencies: stable
           - php: '8.3'
+            dependencies: stable
+          - php: '8.4'
+            dependencies: stable
+          - php: '8.5'
             dependencies: stable
 
     steps:
@@ -38,7 +44,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-          tools: composer:v2.2
+          tools: composer:v2
 
       - name: Validate composer.json
         run: composer validate --strict
@@ -55,7 +61,7 @@ jobs:
         run: vendor/bin/phpunit -c phpunit.xml
 
   quality:
-    name: Quality / PHP 8.3
+    name: Quality / PHP 8.5
     runs-on: ubuntu-22.04
 
     steps:
@@ -65,7 +71,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.5'
           coverage: none
           tools: composer:v2, phpstan
 
