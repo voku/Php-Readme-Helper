@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Tests / PHP ${{ matrix.php }} / ${{ matrix.dependencies }}
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: '8.1'
+            dependencies: lowest
+          - php: '8.1'
+            dependencies: stable
+          - php: '8.2'
+            dependencies: stable
+          - php: '8.3'
+            dependencies: stable
+          - php: '8.4'
+            dependencies: stable
+          - php: '8.5'
+            dependencies: stable
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Update lowest dependencies
+        if: matrix.dependencies == 'lowest'
+        run: composer update --prefer-lowest --prefer-stable --no-interaction --no-progress
+
+      - name: Update stable dependencies
+        if: matrix.dependencies == 'stable'
+        run: composer update --prefer-stable --no-interaction --no-progress
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit -c phpunit.xml
+
+  quality:
+    name: Quality / PHP 8.5
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+          tools: composer:v2, phpstan
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Update stable dependencies
+        run: composer update --prefer-stable --no-interaction --no-progress
+
+      - name: Audit Composer dependencies
+        run: composer audit
+
+      - name: Run PHPStan
+        run: phpstan analyse --configuration=phpstan.neon --no-progress

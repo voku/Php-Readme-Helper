@@ -2,8 +2,9 @@ parameters:
     level: max
     paths:
         - %currentWorkingDirectory%/src/
-    excludes_analyse:
-        - %currentWorkingDirectory%/vendor/*
-        - %currentWorkingDirectory%/tests/*
-    autoload_files:
+    excludePaths:
+        analyse:
+            - %currentWorkingDirectory%/vendor/*
+            - %currentWorkingDirectory%/tests/*
+    bootstrapFiles:
         - %currentWorkingDirectory%/vendor/autoload.php

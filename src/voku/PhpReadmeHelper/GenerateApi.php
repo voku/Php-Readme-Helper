@@ -4,6 +4,7 @@ namespace voku\PhpReadmeHelper;
 
 use voku\PhpReadmeHelper\Template\TemplateFormatter;
 use voku\SimplePhpParser\Model\PHPMethod;
+use voku\SimplePhpParser\Model\PHPParameter;
 use voku\SimplePhpParser\Parsers\PhpCodeParser;
 
 class GenerateApi
@@ -89,7 +90,7 @@ RAW;
     public function generate(
         string $codePath,
         string $baseDocFilePath,
-        array $useClasses = null
+        ?array $useClasses = null
     ): string {
         $phpFiles = PhpCodeParser::getPhpFiles($codePath);
         $phpClasses = \array_merge(
@@ -151,7 +152,7 @@ RAW;
 
                 $returnInto = $this->getMethodReturn($method);
 
-                $methodWithType = $method->name . '(' . \trim(\implode(', ', $paramsInfo['paramsTypes'])) . '): ' . $method->returnTypeFromPhpDoc;
+                $methodWithType = $method->name . '(' . \trim(\implode(', ', $paramsInfo['paramsTypes'])) . '): ' . $this->getSignatureReturnType($method);
 
                 // method --------------------------------------------------------------
 
@@ -209,35 +210,15 @@ RAW;
 
         foreach ($method->parameters as $param) {
             $paramsTemplate = new TemplateFormatter($this->templateMethodParam);
-            /** @noinspection NestedTernaryOperatorInspection */
-            $paramsTemplate->set(
-                'param',
-                (
-                    $param->typeFromPhpDocExtended
-                        ?: $param->typeFromPhpDoc
-                        ?: $param->type
-                        ?: ($this->todoModus ? 'TODO: __not_detected__' : '')
-                )
-                .
-                (
-                    GenerateStringHelper::str_replace_beginning(
-                        (string) $param->typeFromPhpDocMaybeWithComment,
-                        (string) $param->typeFromPhpDoc,
-                        ''
-                    ) ?: ' ' . '$' . $param->name
-                )
-            );
+            $type = $this->getPreferredParamType($param);
+
+            $paramsTemplate->set('param', $this->formatParam($param, $type));
 
             $params[] = $paramsTemplate->format();
 
-            /** @noinspection NestedTernaryOperatorInspection */
-            $paramsTypes[] = (
-                $param->typeFromPhpDocSimple
-                     ?: $param->typeFromPhpDoc
-                     ?: $param->type
-                     ?: $param->typeFromPhpDocExtended
-                     ?: ($this->todoModus ? 'TODO: __not_detected__' : '')
-            ) . ' ' . '$' . $param->name;
+            $paramsTypes[] = $type !== ''
+                ? $type . ' ' . '$' . $param->name
+                : '$' . $param->name;
         }
 
         return ['params' => $params, 'paramsTypes' => $paramsTypes];
@@ -287,15 +268,85 @@ RAW;
     {
         $returnTemplate = new TemplateFormatter($this->templateMethodReturn);
 
-        /** @noinspection NestedTernaryOperatorInspection */
-        $returnTemplate->set(
-            'return',
-            $method->returnTypeFromPhpDocMaybeWithComment
-                ?: $method->returnTypeFromPhpDocExtended
-                ?: $method->returnType
-                ?: ($this->todoModus ? 'TODO: __not_detected__' : '')
-        );
+        $returnTemplate->set('return', $this->formatReturn($method));
 
         return $returnTemplate->format();
+    }
+
+    private function formatParam(PHPParameter $param, string $type): string
+    {
+        $paramString = GenerateStringHelper::str_replace_beginning(
+            (string) $param->typeFromPhpDocMaybeWithComment,
+            $type,
+            ''
+        );
+
+        if ($paramString !== (string) $param->typeFromPhpDocMaybeWithComment) {
+            $paramString = $this->normalizeInlineWhitespace($paramString);
+
+            if ($paramString !== '') {
+                return \trim($type . ' ' . $paramString);
+            }
+        }
+
+        if ($type === '') {
+            return '$' . $param->name;
+        }
+
+        return $type . ' ' . '$' . $param->name;
+    }
+
+    private function formatReturn(PHPMethod $method): string
+    {
+        $type = $this->getPreferredReturnType($method);
+
+        if ($type === '') {
+            return '';
+        }
+
+        $returnString = (string) $method->returnTypeFromPhpDocMaybeWithComment;
+        $returnSuffix = GenerateStringHelper::str_replace_beginning($returnString, $type, '');
+
+        if ($returnString !== '' && $returnSuffix !== $returnString) {
+            $returnSuffix = $this->normalizeInlineWhitespace($returnSuffix);
+
+            if ($returnSuffix !== '') {
+                return \trim($type . ' ' . $returnSuffix);
+            }
+        }
+
+        return $type;
+    }
+
+    private function getPreferredParamType(PHPParameter $param): string
+    {
+        /** @noinspection NestedTernaryOperatorInspection */
+        return $param->typeFromPhpDoc
+            ?: $param->type
+            ?: $param->typeFromPhpDocExtended
+            ?: ($this->todoModus ? 'TODO: __not_detected__' : '');
+    }
+
+    private function getPreferredReturnType(PHPMethod $method): string
+    {
+        /** @noinspection NestedTernaryOperatorInspection */
+        return $method->returnTypeFromPhpDoc
+            ?: $method->returnType
+            ?: $method->returnTypeFromPhpDocExtended
+            ?: ($this->todoModus ? 'TODO: __not_detected__' : '');
+    }
+
+    private function getSignatureReturnType(PHPMethod $method): string
+    {
+        /** @noinspection NestedTernaryOperatorInspection */
+        return $method->returnTypeFromPhpDoc
+            ?: $method->returnType
+            ?: $method->returnTypeFromPhpDocExtended
+            ?: '';
+    }
+
+    private function normalizeInlineWhitespace(string $value): string
+    {
+        return (string) \preg_replace('/\s+/u', ' ', \trim($value));
     }
 }

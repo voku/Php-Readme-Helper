@@ -50,8 +50,6 @@ class GenerateStringHelper
      * @param string $replacement    <p>The string to replace with.</p>
      * @param bool   $case_sensitive [optional] <p>Whether or not to enforce case-sensitivity. Default: true</p>
      *
-     * @psalm-pure
-     *
      * @return string
      *                <p>A string with replaced parts.</p>
      */
@@ -79,8 +77,6 @@ class GenerateStringHelper
      * @param string[] $filter
      * @param bool     $stripe_tags
      * @param bool     $strtolower
-     *
-     * @psalm-pure
      *
      * @return string
      *
