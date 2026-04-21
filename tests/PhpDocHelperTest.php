@@ -44,21 +44,21 @@ Lorem ipsum dolor sit amet, consetetur ...
 
 ## Class methods
 
-<p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#withcallbackcallablestring--string-callback-string">withCallback</a>
+<p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#withcallbackcallablestring-string-callback-string">withCallback</a>
 </td><td><a href="#withemptyparamtypephpdocbool-parsedparamtag-array">withEmptyParamTypePhpDoc</a>
 </td><td><a href="#withphpdocparamintnull-userandint">withPhpDocParam</a>
 </td><td><a href="#withpsalmphpdoconlyparamlistint-userandint">withPsalmPhpDocOnlyParam</a>
-</td></tr><tr><td><a href="#withreturntype-arrayintint">withReturnType</a>
+</td></tr><tr><td><a href="#withreturntype-arrayint-int">withReturnType</a>
 </td><td><a href="#withoutphpdocparambool-userandint-intstringnull">withoutPhpDocParam</a>
 </td><td><a href="#withoutreturntype-falseint">withoutReturnType</a>
 </td></tr></table>
 
-## withCallback(callable(string ): string $callback): string
+## withCallback(callable(string): string $callback): string
 <a href="#voku-php-readme-class-methods">↑</a>
 
 
 **Parameters:**
-- `callable(string ): string $callback`
+- `callable(string): string $callback`
 
 **Return:**
 - `string`
@@ -101,7 +101,7 @@ Lorem ipsum dolor sit amet, consetetur ...
 
 --------
 
-## withReturnType(): array<int,int>
+## withReturnType(): array<int, int>
 <a href="#voku-php-readme-class-methods">↑</a>
 this is a test
 
@@ -113,7 +113,7 @@ Dummy->withReturnType(); // [1, 2, 3]
 __nothing__
 
 **Return:**
-- `array<int,int>`
+- `array<int, int>`
 
 --------
 
