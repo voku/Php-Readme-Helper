@@ -4,6 +4,7 @@ namespace voku\PhpReadmeHelper;
 
 use voku\PhpReadmeHelper\Template\TemplateFormatter;
 use voku\SimplePhpParser\Model\PHPMethod;
+use voku\SimplePhpParser\Model\PHPParameter;
 use voku\SimplePhpParser\Parsers\PhpCodeParser;
 
 class GenerateApi
@@ -89,7 +90,7 @@ RAW;
     public function generate(
         string $codePath,
         string $baseDocFilePath,
-        array $useClasses = null
+        ?array $useClasses = null
     ): string {
         $phpFiles = PhpCodeParser::getPhpFiles($codePath);
         $phpClasses = \array_merge(
@@ -272,7 +273,7 @@ RAW;
         return $returnTemplate->format();
     }
 
-    private function formatParam($param, string $type): string
+    private function formatParam(PHPParameter $param, string $type): string
     {
         $paramString = GenerateStringHelper::str_replace_beginning(
             (string) $param->typeFromPhpDocMaybeWithComment,
@@ -317,7 +318,7 @@ RAW;
         return $type;
     }
 
-    private function getPreferredParamType($param): string
+    private function getPreferredParamType(PHPParameter $param): string
     {
         /** @noinspection NestedTernaryOperatorInspection */
         return $param->typeFromPhpDoc
