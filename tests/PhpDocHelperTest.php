@@ -413,4 +413,300 @@ __nothing__
             $result
         );
     }
+
+    // -------------------------------------------------------------------------
+    // Exception / guard tests
+    // -------------------------------------------------------------------------
+
+    public function testGenerateThrowsOnNonExistentFile(): void
+    {
+        // An empty file triggers the explicit 'Could not load file' exception path
+        // (file_get_contents returns '' which is falsy, so the guard throws).
+        $emptyFile = \sys_get_temp_dir() . '/readme_helper_empty.md';
+        \file_put_contents($emptyFile, '');
+
+        try {
+            $this->expectException(\Exception::class);
+            $this->expectExceptionMessageMatches('/Could not load file/');
+
+            (new \voku\PhpReadmeHelper\GenerateApi())->generate(
+                __DIR__ . '/',
+                $emptyFile,
+                [Dummy::class]
+            );
+        } finally {
+            \unlink($emptyFile);
+        }
+    }
+
+    public function testGenerateThrowsOnMissingFunctionListPlaceholder(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageMatches('/missing string.*__functions_list__/');
+
+        // Use a fixture that has the index placeholder but not the list placeholder.
+        (new \voku\PhpReadmeHelper\GenerateApi())->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_unit_enum.md',  // contains only enum_cases + functions_index + functions_list for DummyUnitEnum
+            [Dummy::class]                             // but Dummy's placeholder is not in that template
+        );
+    }
+
+    public function testGenerateThrowsOnMissingFunctionIndexPlaceholder(): void
+    {
+        // Write a temp template file with only the list placeholder, not the index.
+        $tmpFile = \sys_get_temp_dir() . '/readme_helper_test_missing_index.md';
+        \file_put_contents($tmpFile, '%__functions_list__voku\tests\Dummy__%');
+
+        try {
+            $this->expectException(\Exception::class);
+            $this->expectExceptionMessageMatches('/missing string.*__functions_index__/');
+
+            (new \voku\PhpReadmeHelper\GenerateApi())->generate(
+                __DIR__ . '/',
+                $tmpFile,
+                [Dummy::class]
+            );
+        } finally {
+            \unlink($tmpFile);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Configuration-flag tests
+    // -------------------------------------------------------------------------
+
+    public function testTodoModusDisabledOmitsPlaceholderForUnknownTypes(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+        $api->todoModus = false;
+
+        $result = $api->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_extended.md',
+            [DummyExtended::class]
+        );
+
+        // With todoModus=false a method that has no type info gets empty strings,
+        // NOT the "TODO: __not_detected__" placeholder.
+        static::assertStringNotContainsString('TODO: __not_detected__', $result);
+        // The untyped param shows only the variable name.
+        static::assertStringContainsString('$param', $result);
+    }
+
+    public function testSkipDeprecatedMethodsDefaultsToExcludingDeprecated(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+        // Default: skipDeprecatedMethods = true → deprecatedMethod must NOT appear.
+        $result = $api->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_extended.md',
+            [DummyExtended::class]
+        );
+
+        static::assertStringNotContainsString('deprecatedMethod', $result);
+    }
+
+    public function testSkipDeprecatedMethodsDisabledIncludesDeprecated(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+        $api->skipDeprecatedMethods = false;
+
+        $result = $api->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_extended.md',
+            [DummyExtended::class]
+        );
+
+        // With the flag off the deprecated method MUST appear.
+        static::assertStringContainsString('deprecatedMethod', $result);
+    }
+
+    public function testSkipLeadingUnderscoreDefaultsToExcludingUnderscoreMethods(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+        $result = $api->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_extended.md',
+            [DummyExtended::class]
+        );
+
+        static::assertStringNotContainsString('_internalHelper', $result);
+    }
+
+    public function testSkipLeadingUnderscoreDisabledIncludesUnderscoreMethods(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+        $api->skipMethodsWithLeadingUnderscore = false;
+
+        $result = $api->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_extended.md',
+            [DummyExtended::class]
+        );
+
+        static::assertStringContainsString('_internalHelper', $result);
+    }
+
+    public function testHideTheFunctionIndexSuppressesIndexTable(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+        $api->hideTheFunctionIndex = true;
+
+        $result = $api->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_extended.md',
+            [DummyExtended::class]
+        );
+
+        // The index table contains <table>…</table>; with the flag on it should be absent.
+        static::assertStringNotContainsString('<table>', $result);
+        // The method documentation itself must still be present.
+        static::assertStringContainsString('normalMethod', $result);
+    }
+
+    public function testAutoDetectClassesWhenUseClassesIsNull(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+
+        // Scan only DummyExtended.php so auto-detection finds exactly one class.
+        $tmpFile = \sys_get_temp_dir() . '/readme_helper_autodetect.md';
+        \file_put_contents(
+            $tmpFile,
+            '%__functions_list__voku\tests\DummyExtended__%' . "\n" .
+            '%__functions_index__voku\tests\DummyExtended__%'
+        );
+
+        try {
+            $result = $api->generate(__DIR__ . '/DummyExtended.php', $tmpFile, null);
+            // Auto-detection must discover and output the normal method.
+            static::assertStringContainsString('normalMethod', $result);
+        } finally {
+            \unlink($tmpFile);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Properties filter tests
+    // -------------------------------------------------------------------------
+
+    public function testPropertiesSkipLeadingUnderscoreByDefault(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+
+        $result = $api->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_extended_with_properties.md',
+            [DummyExtended::class]
+        );
+
+        // _underscoreProp must be hidden by default.
+        static::assertStringNotContainsString('_underscoreProp', $result);
+    }
+
+    public function testPropertiesSkipLeadingUnderscoreDisabled(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+        $api->skipPropertiesWithLeadingUnderscore = false;
+
+        $result = $api->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_extended_with_properties.md',
+            [DummyExtended::class]
+        );
+
+        // With the flag off the underscore property must appear.
+        static::assertStringContainsString('_underscoreProp', $result);
+    }
+
+    public function testPropertiesSkipPrivateByDefault(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+
+        $result = $api->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_extended_with_properties.md',
+            [DummyExtended::class]
+        );
+
+        // privateProp is private, so it must be hidden when access = ['public'].
+        static::assertStringNotContainsString('privateProp', $result);
+    }
+
+    public function testReadonlyPropertySignatureIncludesReadonlyKeyword(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+
+        $result = $api->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_extended_with_properties.md',
+            [DummyExtended::class]
+        );
+
+        static::assertStringContainsString('readonly', $result);
+        static::assertStringContainsString('readonlyProp', $result);
+    }
+
+    public function testStaticPropertySignatureIncludesStaticKeyword(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+
+        $result = $api->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_extended_with_properties.md',
+            [DummyExtended::class]
+        );
+
+        static::assertStringContainsString('static', $result);
+        static::assertStringContainsString('staticProp', $result);
+    }
+
+    public function testNativeTypedPropertyUsesNativeTypeWhenNoPhpDoc(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+
+        $result = $api->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_extended_with_properties.md',
+            [DummyExtended::class]
+        );
+
+        // nativeTypedProp has type=string but no phpDocExtended → must show 'string'
+        static::assertStringContainsString('string $nativeTypedProp', $result);
+    }
+
+    public function testPropertyTypeFromDefaultValueFallback(): void
+    {
+        $api = new \voku\PhpReadmeHelper\GenerateApi();
+
+        $result = $api->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_extended_with_properties.md',
+            [DummyExtended::class]
+        );
+
+        // defaultOnlyProp has no native type and no @var, so the type comes from
+        // the default value ('hello' → string).
+        static::assertStringContainsString('string $defaultOnlyProp', $result);
+    }
+
+    // -------------------------------------------------------------------------
+    // Unit enum (cases without backing values)
+    // -------------------------------------------------------------------------
+
+    public function testApiWithUnitEnum(): void
+    {
+        $result = (new \voku\PhpReadmeHelper\GenerateApi())->generate(
+            __DIR__ . '/',
+            __DIR__ . '/fixtures/base_unit_enum.md',
+            [DummyUnitEnum::class]
+        );
+
+        // Unit enum cases should appear WITHOUT a value.
+        static::assertStringContainsString('- `FOO`', $result);
+        static::assertStringContainsString('- `BAR`', $result);
+        static::assertStringContainsString('- `BAZ`', $result);
+        // And must NOT contain a '=' assignment.
+        static::assertStringNotContainsString('FOO =', $result);
+    }
 }
