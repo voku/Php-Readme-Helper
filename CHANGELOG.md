@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.7.0 (2026-04-24)
+
+- add support for properties documentation (`__properties_list__` / `__properties_index__` template placeholders)
+- add support for enum cases documentation (`__enum_cases__` template placeholder)
+- add support for traits (treated the same as classes/interfaces)
+- add `skipPropertiesWithLeadingUnderscore`, `templateProperty`, and `templateEnumCase` public properties
+- add `__properties_index__` anchor ID parameter to `getIndexHtmlTable`
+- achieve 100% test coverage
+
 ### 0.6.4 (2022-09-01)
 
 - update vendor

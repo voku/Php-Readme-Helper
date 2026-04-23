@@ -25,6 +25,19 @@ $readmeText = ($readmeGenerator)->generate(
 file_put_contents(__DIR__ . '/../README.md', $readmeText);
 ```
 
+### Template placeholders
+
+In your base markdown file, use the following placeholders:
+
+| Placeholder | Description |
+|---|---|
+| `%__functions_index__ClassName__%` | Renders an HTML table index of all public methods. |
+| `%__functions_list__ClassName__%` | Renders the full API documentation for all public methods. |
+| `%__properties_index__ClassName__%` | Renders an HTML table index of all public properties (optional). |
+| `%__properties_list__ClassName__%` | Renders the full documentation for all public properties (optional). |
+| `%__enum_cases__ClassName__%` | Renders all cases of a PHP enum (optional). |
+
+Replace `ClassName` with the fully-qualified class name using backslashes, e.g. `voku\PhpReadmeHelper\GenerateApi`.
 
 ### GenerateApi
 
