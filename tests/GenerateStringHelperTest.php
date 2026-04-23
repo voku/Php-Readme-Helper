@@ -148,9 +148,9 @@ final class GenerateStringHelperTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testCssIdentifierStripeTagsEnabled(): void
+    public function testCssIdentifierStripTagsEnabled(): void
     {
-        // HTML tags should be removed when stripe_tags is true.
+        // HTML tags should be removed when stripe_tags (the parameter name) is true.
         static::assertSame(
             'hello',
             GenerateStringHelper::css_identifier('<b>Hello</b>', [' ' => '-', '/' => '-', '[' => '', ']' => ''], true)
