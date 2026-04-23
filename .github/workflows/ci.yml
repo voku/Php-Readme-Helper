@@ -17,7 +17,7 @@ concurrency:
 jobs:
   tests:
     name: Tests / PHP ${{ matrix.php }} / ${{ matrix.dependencies }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -62,7 +62,7 @@ jobs:
 
   quality:
     name: Quality / PHP 8.5
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
