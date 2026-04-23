@@ -192,7 +192,7 @@ __nothing__
 
 ## Properties
 
-<p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#public-string-bar">bar</a>
+<p id="voku-php-readme-class-properties"></p><table><tr><td><a href="#public-string-bar">bar</a>
 </td><td><a href="#public-int-foo">foo</a>
 </td><td><a href="#public-nullarrayint-int-lall1">lall1</a>
 </td><td><a href="#public-float-lall2">lall2</a>

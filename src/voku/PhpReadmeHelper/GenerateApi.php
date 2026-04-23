@@ -256,7 +256,7 @@ RAW;
                 \ksort($propertiesIndex, \SORT_NATURAL);
 
                 $documentTemplate->set($propertiesListHelper, \implode("\n", $propertiesDocumentation));
-                $documentTemplate->set('__properties_index__' . $useClass . '__', $this->getIndexHtmlTable($propertiesIndex));
+                $documentTemplate->set('__properties_index__' . $useClass . '__', $this->getIndexHtmlTable($propertiesIndex, 'voku-php-readme-class-properties'));
             }
 
             // Optional: enum cases documentation
@@ -305,7 +305,7 @@ RAW;
      *
      * @psalm-param array<string, string> $functionsIndex
      */
-    private function getIndexHtmlTable(array $functionsIndex): string
+    private function getIndexHtmlTable(array $functionsIndex, string $anchorId = 'voku-php-readme-class-methods'): string
     {
         // init
         $indexLastChar = null;
@@ -335,7 +335,7 @@ RAW;
             $indexStrResult = '<table>' . $indexStrResult . '</table>';
         }
 
-        return '<p id="voku-php-readme-class-methods"></p>' . $indexStrResult;
+        return '<p id="' . $anchorId . '"></p>' . $indexStrResult;
     }
 
     private function getMethodReturn(PHPMethod $method): string
