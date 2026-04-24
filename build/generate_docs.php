@@ -1,5 +1,8 @@
 <?php
 
+// Hint: I would recommend to put another composer.json in the build directory,
+// so that this does not conflict with project dependencies.
+
 require __DIR__ . '/../vendor/autoload.php';
 
 $readmeGenerator = new \voku\PhpReadmeHelper\GenerateApi();
