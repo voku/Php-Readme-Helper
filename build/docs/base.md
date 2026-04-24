@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.com/voku/Php-Readme-Helper.svg?branch=master)](https://travis-ci.com/voku/Php-Readme-Helper)
-[![Coverage Status](https://coveralls.io/repos/github/voku/Php-Readme-Helper/badge.svg?branch=master)](https://coveralls.io/github/voku/Php-Readme-Helper?branch=master)
+[![CI](https://github.com/voku/Php-Readme-Helper/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/voku/Php-Readme-Helper/actions/workflows/ci.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/2005467672aa44abbf2ba57fbad80af1)](https://www.codacy.com/manual/voku/Php-Readme-Helper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=voku/Php-Readme-Helper&amp;utm_campaign=Badge_Grade)
 [![Latest Stable Version](https://poser.pugx.org/voku/Php-Readme-Helper/v/stable)](https://packagist.org/packages/voku/php-readme-helper) 
 [![Total Downloads](https://poser.pugx.org/voku/php-readme-helper/downloads)](https://packagist.org/packages/voku/php-readme-helper) 
@@ -25,6 +24,19 @@ $readmeText = ($readmeGenerator)->generate(
 file_put_contents(__DIR__ . '/../README.md', $readmeText);
 ```
 
+### Template placeholders
+
+In your base markdown file, use the following placeholders:
+
+| Placeholder | Description |
+|---|---|
+| `%__functions_index__ClassName__%` | Renders an HTML table index of all public methods. |
+| `%__functions_list__ClassName__%` | Renders the full API documentation for all public methods. |
+| `%__properties_index__ClassName__%` | Renders an HTML table index of all public properties (optional). |
+| `%__properties_list__ClassName__%` | Renders the full documentation for all public properties (optional). |
+| `%__enum_cases__ClassName__%` | Renders all cases of a PHP enum (optional). |
+
+Replace `ClassName` with the fully-qualified class name using backslashes, e.g. `voku\PhpReadmeHelper\GenerateApi`.
 
 ### GenerateApi
 
